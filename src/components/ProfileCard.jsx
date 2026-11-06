@@ -1,22 +1,14 @@
-import React from 'react';
+import { useState } from 'react';
 import '../styles/ProfileCard.css';
+import '../styles/Description.css';
 import Description from './Description';
-
-const ProfileCard = () => {
-  return (
-    <div className="profile-card">
-      <div className="seccion-superior">
-        <div className="imagen-fondo" style={{ backgroundImage: 'url("https://www.elaltoesnoticia.com/wp-content/uploads/2017/10/fodo-verde.jpg")' }} />
-      </div>
-      <div className="contenedor-imagen-perfil">
-        <div className="imagen-perfil" />
-      </div>
-      <div className="seccion-inferior">
-        <Description />
-      </div>
-    </div>
-  );
+export default function ProfileCard({ name = 'Perfil de demostración', description, imageUrl }) {
+  const [failedUrl, setFailedUrl] = useState(null);
+  const showImage = imageUrl && failedUrl !== imageUrl;
+  return <article className="profile-card"><div className="seccion-superior" aria-hidden="true" />
+    <div className="profile-avatar">{showImage
+      ? <img src={imageUrl} alt={`Retrato de ${name}`} onError={() => setFailedUrl(imageUrl)} />
+      : <span role="img" aria-label={`Perfil sin imagen: ${name}`}>{name.trim().slice(0, 1).toUpperCase() || '?'}</span>}</div>
+    <div className="seccion-inferior"><h1>{name}</h1><Description>{description}</Description></div>
+  </article>;
 }
-
-export default ProfileCard;
-
